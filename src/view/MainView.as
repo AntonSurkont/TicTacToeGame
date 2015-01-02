@@ -7,6 +7,8 @@ import controller.MainController;
 
 import event.PileEvent;
 
+import flash.display.SimpleButton;
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -63,7 +65,12 @@ public class MainView extends Sprite {
 	}
 
 	public function onModelChanged(event:Event):void {
-		titleTextField.setText(_model.round, _model.playersArr[_model.playerId]);
+		if (!_model.hasWinner) {
+			titleTextField.setText(_model.round, _model.playersArr[_model.playerId]);
+		}
+		else {
+			titleTextField.text = "Player " +  _model.playersArr[_model.playerId] + " win the game";
+		}
 	}
 
 	public function onPileClick(e:PileEvent):void {

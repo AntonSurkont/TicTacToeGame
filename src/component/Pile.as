@@ -9,6 +9,10 @@ public class Pile extends Sprite {
 	public static const WIDTH:int = 140;
 	public static const HEIGHT:int = 140;
 
+	public static const SELECTED_FLAG_NOTHING:int = 0;
+	public static const SELECTED_FLAG_CIRCLE:int = 1;
+	public static const SELECTED_FLAG_MARK:int = 2;
+
 	private static const BORDER_THICKNESS:int = 4;
 	private static const SYMBOL_THICKNESS:int = 10;
 	private static const BACKGROUND_COLOR:uint = 0x014A7F;
@@ -17,8 +21,9 @@ public class Pile extends Sprite {
 	private static const CIRCLE_RADIUS:int = 46;
 	private static const MARK_PADDING:int = 30;
 
+	public var selectedFlag:int = 0;// 1 - circle; 2 - mark; 0 - nothing
+
 	private var content:Sprite;
-	private var selectedFlag:Boolean = false;
 
 	public function Pile(x:int, y:int) {
 		this.buttonMode = true;
@@ -46,7 +51,7 @@ public class Pile extends Sprite {
 		content.graphics.beginFill(BACKGROUND_COLOR);
 		content.graphics.drawCircle(WIDTH / 2, HEIGHT / 2, CIRCLE_RADIUS - SYMBOL_THICKNESS);
 		content.graphics.endFill();
-		selectedFlag = true;
+		selectedFlag = 1;
 	}
 
 	public function drawMark():void {
@@ -56,12 +61,12 @@ public class Pile extends Sprite {
 		content.graphics.lineTo(WIDTH - MARK_PADDING, HEIGHT - MARK_PADDING);
 		content.graphics.moveTo(MARK_PADDING, HEIGHT - MARK_PADDING);
 		content.graphics.lineTo(WIDTH - MARK_PADDING, MARK_PADDING);
-		selectedFlag = true;
+		selectedFlag = 2;
 	}
 
 	public function reset():void {
 		content.graphics.clear();
-		selectedFlag = false;
+		selectedFlag = 0;
 	}
 
 	private function onAddedToStage(event:Event):void {
@@ -73,7 +78,7 @@ public class Pile extends Sprite {
 	}
 
 	private function onClick(event:Event):void {
-		if (!selectedFlag)
+		if (selectedFlag == 0)
 			dispatchEvent(new PileEvent(PileEvent.CLICK));
 	}
 }

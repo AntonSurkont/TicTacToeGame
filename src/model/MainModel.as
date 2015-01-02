@@ -39,6 +39,19 @@ public class MainModel extends EventDispatcher {
 		}
 	}
 
+	private var _hasWinner:Boolean = false;
+
+	public function get hasWinner():Boolean {
+		return _hasWinner;
+	}
+
+	public function set hasWinner(value:Boolean):void {
+		if (_hasWinner != value) {
+			_hasWinner = value;
+			dispatchEvent(new Event(Event.CHANGE));
+		}
+	}
+
 	public static function getPlayerId():int {
 		return Math.round(Math.random());
 	}
