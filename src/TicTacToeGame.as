@@ -8,6 +8,8 @@ import controller.MainController;
 [SWF(width="500", height="650", backgroundColor="#014A7F")]
 
 public class TicTacToeGame extends Sprite {
+	public static const DIMENSION:int = 3;
+
 	private var _model:MainModel;
 	private var _view:MainView;
 	private var _controller:MainController;

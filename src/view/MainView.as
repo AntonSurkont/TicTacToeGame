@@ -47,8 +47,8 @@ public class MainView extends Sprite {
 
 	private function createPiles():void {
 		var pile:Pile;
-		for (var i:int = 0; i < 3; i++) {
-			for (var j:int = 0; j < 3; j++) {
+		for (var i:int = 0; i < TicTacToeGame.DIMENSION; i++) {
+			for (var j:int = 0; j < TicTacToeGame.DIMENSION; j++) {
 				pile = new Pile(40 + j * Pile.WIDTH, 105 + i * Pile.HEIGHT);
 				_model.piles[i].push(pile);
 				addChild(pile);

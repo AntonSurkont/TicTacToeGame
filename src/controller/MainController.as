@@ -36,8 +36,8 @@ public class MainController {
 		_model.playerId = MainModel.getPlayerId();
 
 		var pile:Pile;
-		for (var i:int = 0; i < 3; i++) {
-			for (var j:int = 0; j < 3; j++) {
+		for (var i:int = 0; i < TicTacToeGame.DIMENSION; i++) {
+			for (var j:int = 0; j < TicTacToeGame.DIMENSION; j++) {
 				pile = _model.piles[i][j];
 				pile.reset();
 			}
@@ -47,7 +47,7 @@ public class MainController {
 	private function somePlayerWins():Boolean {
 		var result:Boolean = false;
 
-		for (var i:int = 0; i < 3; i++) {
+		for (var i:int = 0; i < TicTacToeGame.DIMENSION; i++) {
 			if (checkWinSet(ROW, i))
 				return true;
 			if (checkWinSet(COLUMN, i))
@@ -65,6 +65,7 @@ public class MainController {
 	private function checkWinSet(flag:int, i:int = 0):Boolean {
 		var result:Boolean = true;
 		var pile:Pile;
+		var piles:Array = [];
 		var selectedFlag:int;
 		for (var j:int = 0; j < 3; j++) {
 			switch (flag) {
@@ -78,11 +79,12 @@ public class MainController {
 					pile = _model.piles[j][j];
 					break;
 				case SECOND_DIAGONAL:
-					pile = _model.piles[j][2 - j];
+					pile = _model.piles[j][TicTacToeGame.DIMENSION - 1 - j];
 					break;
 			}
 			if (pile.selectedFlag == Pile.SELECTED_FLAG_NOTHING)
 				return false;
+			piles.push(pile);
 			if (j == 0) {
 				selectedFlag = pile.selectedFlag;
 			}
@@ -91,7 +93,14 @@ public class MainController {
 					return false;
 			}
 		}
+		blinkWinPiles(piles);
 		return result;
+	}
+
+	private function blinkWinPiles(piles:Array):void {
+		for (var j:int = 0; j < TicTacToeGame.DIMENSION; j++) {
+			Pile(piles[j]).blink();
+		}
 	}
 }
 }

@@ -4,6 +4,8 @@ import event.PileEvent;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.events.TimerEvent;
+import flash.utils.Timer;
 
 public class Pile extends Sprite {
 	public static const WIDTH:int = 140;
@@ -24,6 +26,9 @@ public class Pile extends Sprite {
 	public var selectedFlag:int = 0;// 1 - circle; 2 - mark; 0 - nothing
 
 	private var content:Sprite;
+
+	private var blinkTimer:Timer = new Timer(200);
+	private var timerFlag:int;
 
 	public function Pile(x:int, y:int) {
 		this.buttonMode = true;
@@ -69,17 +74,36 @@ public class Pile extends Sprite {
 		selectedFlag = 0;
 	}
 
+	public function blink():void {
+		timerFlag = 8;
+		blinkTimer.start();
+	}
+
 	private function onAddedToStage(event:Event):void {
 		this.addEventListener(MouseEvent.CLICK, onClick);
+		blinkTimer.addEventListener(TimerEvent.TIMER, onTimer);
 	}
 
 	private function onRemovedFromStage(event:Event):void {
 		this.removeEventListener(MouseEvent.CLICK, onClick);
+		blinkTimer.removeEventListener(TimerEvent.TIMER, onTimer);
 	}
 
 	private function onClick(event:Event):void {
 		if (selectedFlag == 0)
 			dispatchEvent(new PileEvent(PileEvent.CLICK));
+	}
+
+	private function onTimer(event:Event):void {
+		blinkTimer.stop();
+		timerFlag--;
+		if (timerFlag > 0) {
+			content.visible = !content.visible;
+			blinkTimer.start();
+		}
+		else {
+			content.visible = true;
+		}
 	}
 }
 }
