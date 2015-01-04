@@ -4,6 +4,11 @@ import component.Pile;
 import model.MainModel;
 
 public class MainController {
+	private const ROW:int = 0;
+	private const COLUMN:int = 1;
+	private const FIRST_DIAGONAL:int = 2;
+	private const SECOND_DIAGONAL:int = 3;
+
 	private var _model:MainModel;
 
 	public function MainController(model:MainModel) {
@@ -43,83 +48,39 @@ public class MainController {
 		var result:Boolean = false;
 
 		for (var i:int = 0; i < 3; i++) {
-			if (checkRow(i))
+			if (checkWinSet(ROW, i))
 				return true;
-			if (checkColumn(i))
+			if (checkWinSet(COLUMN, i))
 				return true;
 		}
 
-		if (checkFirstDiagonal())
+		if (checkWinSet(FIRST_DIAGONAL))
 			return true;
-		if (checkSecondDiagonal())
+		if (checkWinSet(SECOND_DIAGONAL))
 			return true;
 
 		return result;
 	}
 
-	private function checkRow(row:int):Boolean {
+	private function checkWinSet(flag:int, i:int = 0):Boolean {
 		var result:Boolean = true;
 		var pile:Pile;
 		var selectedFlag:int;
 		for (var j:int = 0; j < 3; j++) {
-			pile = _model.piles[row][j];
-			if (pile.selectedFlag == Pile.SELECTED_FLAG_NOTHING)
-				return false;
-			if (j == 0) {
-				selectedFlag = pile.selectedFlag;
+			switch (flag) {
+				case ROW:
+					pile = _model.piles[i][j];
+					break;
+				case COLUMN:
+					pile = _model.piles[j][i];
+					break;
+				case FIRST_DIAGONAL:
+					pile = _model.piles[j][j];
+					break;
+				case SECOND_DIAGONAL:
+					pile = _model.piles[j][2 - j];
+					break;
 			}
-			else {
-				if (selectedFlag != pile.selectedFlag)
-					return false;
-			}
-		}
-		return result;
-	}
-
-	private function checkColumn(column:int):Boolean {
-		var result:Boolean = true;
-		var pile:Pile;
-		var selectedFlag:int;
-		for (var j:int = 0; j < 3; j++) {
-			pile = _model.piles[j][column];
-			if (pile.selectedFlag == Pile.SELECTED_FLAG_NOTHING)
-				return false;
-			if (j == 0) {
-				selectedFlag = pile.selectedFlag;
-			}
-			else {
-				if (selectedFlag != pile.selectedFlag)
-					return false;
-			}
-		}
-		return result;
-	}
-
-	private function checkFirstDiagonal():Boolean {
-		var result:Boolean = true;
-		var pile:Pile;
-		var selectedFlag:int;
-		for (var j:int = 0; j < 3; j++) {
-			pile = _model.piles[j][j];
-			if (pile.selectedFlag == Pile.SELECTED_FLAG_NOTHING)
-				return false;
-			if (j == 0) {
-				selectedFlag = pile.selectedFlag;
-			}
-			else {
-				if (selectedFlag != pile.selectedFlag)
-					return false;
-			}
-		}
-		return result;
-	}
-
-	private function checkSecondDiagonal():Boolean {
-		var result:Boolean = true;
-		var pile:Pile;
-		var selectedFlag:int;
-		for (var j:int = 0; j < 3; j++) {
-			pile = _model.piles[j][2 - j];
 			if (pile.selectedFlag == Pile.SELECTED_FLAG_NOTHING)
 				return false;
 			if (j == 0) {
